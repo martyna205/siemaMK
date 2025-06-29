@@ -91,7 +91,6 @@
                         var i = document.createDocumentFragment();
                         if (this.config.loop)
                             for (var r = this.innerElements.length - Math.round(this.perPage); r < this.innerElements.length; r++) {
-                                console.log(this.innerElements);
                                 var n = this.buildSliderFrameItem(this.innerElements[r].cloneNode(!0));
                                 i.appendChild(n)
                             }
