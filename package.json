@@ -1,0 +1,16 @@
+{
+  "name": "siema-mk",
+  "version": "1.0.0",
+  "description": "",
+  "main": "siema.js",
+  "scripts": {
+    "test": "echo \"No test specified\" && exit 0"
+  },
+  "keywords": [],
+  "author": "Martyna",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/martyna205/siemaMK.git"
+  }
+}
