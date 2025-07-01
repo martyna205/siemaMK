@@ -57,7 +57,7 @@
                 function e(t) {
                     var i = this;
                     if (r(this, e), this.config = e.mergeSettings(t), this.selector = "string" == typeof this.config.selector ? document.querySelector(this.config.selector) : this.config.selector, null === this.selector) throw new Error("Something wrong with your selector 😭");
-                    this.resolveSlidesNumber(), this.selectorWidth = this.selector.offsetWidth, this.innerElements = [].slice.call(this.selector.children), this.currentSlide = this.config.loop ? this.config.startIndex % this.innerElements.length : Math.max(0, Math.min(this.config.startIndex, this.innerElements.length - this.perPage)), this.transformProperty = e.webkitOrNot(), ["resizeHandler", "touchstartHandler", "touchendHandler", "touchmoveHandler", "mousedownHandler", "mouseupHandler", "mouseleaveHandler", "mousemoveHandler", "clickHandler"].forEach(function(e) {
+                    this.resolveSlidesNumber(), this.selectorWidth = this.selector.offsetWidth, this.innerElements = [].slice.call(this.selector.children), this.currentSlide = this.config.loop ? this.config.startIndex % this.innerElements.length : Math.max(0, Math.min(this.config.startIndex, this.innerElements.length - Math.round(this.perPage))), this.transformProperty = e.webkitOrNot(), ["resizeHandler", "touchstartHandler", "touchendHandler", "touchmoveHandler", "mousedownHandler", "mouseupHandler", "mouseleaveHandler", "mousemoveHandler", "clickHandler"].forEach(function(e) {
                         i[e] = i[e].bind(i)
                     }), this.init()
                 }
@@ -85,8 +85,8 @@
                 }, {
                     key: "buildSliderFrame",
                     value: function() {
-                        var e = this.selectorWidth / this.perPage,
-                            t = this.config.loop ? this.innerElements.length + 2 * this.perPage : this.innerElements.length;
+                        var e = this.selectorWidth / Math.round(this.perPage),
+                            t = this.config.loop ? this.innerElements.length + 2 * Math.round(this.perPage) : this.innerElements.length;
                         this.sliderFrame = document.createElement("div"), this.sliderFrame.style.width = e * t + "px", this.enableTransition(), this.config.draggable && (this.selector.style.cursor = "-webkit-grab");
                         var i = document.createDocumentFragment();
                         if (this.config.loop)
@@ -99,7 +99,7 @@
                             i.appendChild(l)
                         }
                         if (this.config.loop)
-                            for (var o = 0; o < this.perPage; o++) {
+                            for (var o = 0; o < Math.round(this.perPage); o++) {
                                 var a = this.buildSliderFrameItem(this.innerElements[o].cloneNode(!0));
                                 i.appendChild(a)
                             }
@@ -109,15 +109,15 @@
                     key: "buildSliderFrameItem",
                     value: function(e) {
                         var t = document.createElement("div");
-                        return t.style.cssFloat = this.config.rtl ? "right" : "left", t.style.float = this.config.rtl ? "right" : "left", t.style.width = (this.config.loop ? 100 / (this.innerElements.length + 2 * this.perPage) : 100 / this.innerElements.length) + "%", t.appendChild(e), t
+                        return t.style.cssFloat = this.config.rtl ? "right" : "left", t.style.float = this.config.rtl ? "right" : "left", t.style.width = (this.config.loop ? 100 / (this.innerElements.length + 2 * Math.round(this.perPage)) : 100 / this.innerElements.length) + "%", t.appendChild(e), t
                     }
                 }, {
                     key: "resolveSlidesNumber",
                     value: function() {
-                        if ("number" == typeof this.config.perPage) this.perPage = this.config.perPage;
+                        if ("number" == typeof this.config.perPage) Math.round(this.perPage) = this.config.perPage;
                         else if ("object" === n(this.config.perPage)) {
-                            this.perPage = 1;
-                            for (var e in this.config.perPage) window.innerWidth >= e && (this.perPage = this.config.perPage[e])
+                            Math.round(this.perPage) = 1;
+                            for (var e in this.config.perPage) window.innerWidth >= e && (Math.round(this.perPage) = this.config.perPage[e])
                         }
                     }
                 }, {
@@ -125,15 +125,15 @@
                     value: function() {
                         var e = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : 1,
                             t = arguments[1];
-                        if (!(this.innerElements.length <= this.perPage)) {
+                        if (!(this.innerElements.length <= Math.round(this.perPage))) {
                             var i = this.currentSlide;
                             if (this.config.loop) {
                                 if (this.currentSlide - e < 0) {
                                     this.disableTransition();
                                     var r = this.currentSlide + this.innerElements.length,
-                                        n = this.perPage,
+                                        n = Math.round(this.perPage),
                                         s = r + n,
-                                        l = (this.config.rtl ? 1 : -1) * s * (this.selectorWidth / this.perPage),
+                                        l = (this.config.rtl ? 1 : -1) * s * (this.selectorWidth / Math.round(this.perPage)),
                                         o = this.config.draggable ? this.drag.endX - this.drag.startX : 0;
                                     this.sliderFrame.style[this.transformProperty] = "translate3d(" + (l + o) + "px, 0, 0)", this.currentSlide = r - e
                                 } else this.currentSlide = this.currentSlide - e
@@ -146,19 +146,19 @@
                     value: function() {
                         var e = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : 1,
                             t = arguments[1];
-                        if (!(this.innerElements.length <= this.perPage)) {
+                        if (!(this.innerElements.length <= Math.round(this.perPage))) {
                             var i = this.currentSlide;
                             if (this.config.loop) {
-                                if (this.currentSlide + e > this.innerElements.length - this.perPage) {
+                                if (this.currentSlide + e > this.innerElements.length - Math.round(this.perPage)) {
                                     this.disableTransition();
                                     var r = this.currentSlide - this.innerElements.length,
-                                        n = this.perPage,
+                                        n = Math.round(this.perPage),
                                         s = r + n,
-                                        l = (this.config.rtl ? 1 : -1) * s * (this.selectorWidth / this.perPage),
+                                        l = (this.config.rtl ? 1 : -1) * s * (this.selectorWidth / Math.round(this.perPage)),
                                         o = this.config.draggable ? this.drag.endX - this.drag.startX : 0;
                                     this.sliderFrame.style[this.transformProperty] = "translate3d(" + (l + o) + "px, 0, 0)", this.currentSlide = r + e
                                 } else this.currentSlide = this.currentSlide + e
-                            } else this.currentSlide = Math.min(this.currentSlide + e, this.innerElements.length - this.perPage);
+                            } else this.currentSlide = Math.min(this.currentSlide + e, this.innerElements.length - Math.round(this.perPage));
                             i !== this.currentSlide && (this.slideToCurrent(this.config.loop), this.config.onChange.call(this), t && t.call(this))
                         }
                     }
@@ -175,17 +175,17 @@
                 }, {
                     key: "goTo",
                     value: function(e, t) {
-                        if (!(this.innerElements.length <= this.perPage)) {
+                        if (!(this.innerElements.length <= Math.round(this.perPage))) {
                             var i = this.currentSlide;
-                            this.currentSlide = this.config.loop ? e % this.innerElements.length : Math.min(Math.max(e, 0), this.innerElements.length - this.perPage), i !== this.currentSlide && (this.slideToCurrent(), this.config.onChange.call(this), t && t.call(this))
+                            this.currentSlide = this.config.loop ? e % this.innerElements.length : Math.min(Math.max(e, 0), this.innerElements.length - Math.round(this.perPage)), i !== this.currentSlide && (this.slideToCurrent(), this.config.onChange.call(this), t && t.call(this))
                         }
                     }
                 }, {
                     key: "slideToCurrent",
                     value: function(e) {
                         var t = this,
-                            i = this.config.loop ? this.currentSlide + this.perPage : this.currentSlide,
-                            r = (this.config.rtl ? 1 : -1) * i * (this.selectorWidth / this.perPage);
+                            i = this.config.loop ? this.currentSlide + Math.round(this.perPage) : this.currentSlide,
+                            r = (this.config.rtl ? 1 : -1) * i * (this.selectorWidth / Math.round(this.perPage));
                         e ? requestAnimationFrame(function() {
                             requestAnimationFrame(function() {
                                 t.enableTransition(), t.sliderFrame.style[t.transformProperty] = "translate3d(" + r + "px, 0, 0)"
@@ -197,15 +197,15 @@
                     value: function() {
                         var e = (this.config.rtl ? -1 : 1) * (this.drag.endX - this.drag.startX),
                             t = Math.abs(e),
-                            i = this.config.multipleDrag ? Math.ceil(t / (this.selectorWidth / this.perPage)) : 1,
+                            i = this.config.multipleDrag ? Math.ceil(t / (this.selectorWidth / Math.round(this.perPage))) : 1,
                             r = e > 0 && this.currentSlide - i < 0,
-                            n = e < 0 && this.currentSlide + i > this.innerElements.length - this.perPage;
-                        e > 0 && t > this.config.threshold && this.innerElements.length > this.perPage ? this.prev(i) : e < 0 && t > this.config.threshold && this.innerElements.length > this.perPage && this.next(i), this.slideToCurrent(r || n)
+                            n = e < 0 && this.currentSlide + i > this.innerElements.length - Math.round(this.perPage);
+                        e > 0 && t > this.config.threshold && this.innerElements.length > Math.round(this.perPage) ? this.prev(i) : e < 0 && t > this.config.threshold && this.innerElements.length > Math.round(this.perPage) && this.next(i), this.slideToCurrent(r || n)
                     }
                 }, {
                     key: "resizeHandler",
                     value: function() {
-                        this.resolveSlidesNumber(), this.currentSlide + this.perPage > this.innerElements.length && (this.currentSlide = this.innerElements.length <= this.perPage ? 0 : this.innerElements.length - this.perPage), this.selectorWidth = this.selector.offsetWidth, this.buildSliderFrame()
+                        this.resolveSlidesNumber(), this.currentSlide + Math.round(this.perPage) > this.innerElements.length && (this.currentSlide = this.innerElements.length <= Math.round(this.perPage) ? 0 : this.innerElements.length - Math.round(this.perPage)), this.selectorWidth = this.selector.offsetWidth, this.buildSliderFrame()
                     }
                 }, {
                     key: "clearDrag",
@@ -233,8 +233,8 @@
                     value: function(e) {
                         if (e.stopPropagation(), null === this.drag.letItGo && (this.drag.letItGo = Math.abs(this.drag.startY - e.touches[0].pageY) < Math.abs(this.drag.startX - e.touches[0].pageX)), this.pointerDown && this.drag.letItGo) {
                             e.preventDefault(), this.drag.endX = e.touches[0].pageX, this.sliderFrame.style.webkitTransition = "all 0ms " + this.config.easing, this.sliderFrame.style.transition = "all 0ms " + this.config.easing;
-                            var t = this.config.loop ? this.currentSlide + this.perPage : this.currentSlide,
-                                i = t * (this.selectorWidth / this.perPage),
+                            var t = this.config.loop ? this.currentSlide + Math.round(this.perPage) : this.currentSlide,
+                                i = t * (this.selectorWidth / Math.round(this.perPage)),
                                 r = this.drag.endX - this.drag.startX,
                                 n = this.config.rtl ? i + r : i - r;
                             this.sliderFrame.style[this.transformProperty] = "translate3d(" + (this.config.rtl ? 1 : -1) * n + "px, 0, 0)"
@@ -255,8 +255,8 @@
                     value: function(e) {
                         if (e.preventDefault(), this.pointerDown) {
                             "A" === e.target.nodeName && (this.drag.preventClick = !0), this.drag.endX = e.pageX, this.selector.style.cursor = "-webkit-grabbing", this.sliderFrame.style.webkitTransition = "all 0ms " + this.config.easing, this.sliderFrame.style.transition = "all 0ms " + this.config.easing;
-                            var t = this.config.loop ? this.currentSlide + this.perPage : this.currentSlide,
-                                i = t * (this.selectorWidth / this.perPage),
+                            var t = this.config.loop ? this.currentSlide + Math.round(this.perPage) : this.currentSlide,
+                                i = t * (this.selectorWidth / Math.round(this.perPage)),
                                 r = this.drag.endX - this.drag.startX,
                                 n = this.config.rtl ? i + r : i - r;
                             this.sliderFrame.style[this.transformProperty] = "translate3d(" + (this.config.rtl ? 1 : -1) * n + "px, 0, 0)"
@@ -277,7 +277,7 @@
                     value: function(e, t) {
                         if (e < 0 || e >= this.innerElements.length) throw new Error("Item to remove doesn't exist 😭");
                         var i = e < this.currentSlide,
-                            r = this.currentSlide + this.perPage - 1 === e;
+                            r = this.currentSlide + Math.round(this.perPage) - 1 === e;
                         (i || r) && this.currentSlide--, this.innerElements.splice(e, 1), this.buildSliderFrame(), t && t.call(this)
                     }
                 }, {
